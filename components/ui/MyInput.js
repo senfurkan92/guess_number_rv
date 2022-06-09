@@ -1,6 +1,6 @@
 import { TextInput, StyleSheet, View } from 'react-native' 
 
-export default function MyInput({placeholder, action, maxLength}) {
+export default function MyInput({placeholder, action, maxLength, current_value}) {
 
     const changeAct = (text) => (action && typeof action === 'function') && action(text.trim())
 
@@ -14,6 +14,7 @@ export default function MyInput({placeholder, action, maxLength}) {
                 style={styles.input} 
                 placeholder={placeholder || 'Enter here...'}
                 onChangeText={changeAct}
+                value={current_value.toString() || ''}
             />
         </View>
     )
