@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native'
+import colors from '../../util/colors'
 
 export default function GameArea({children}) {
     return (
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 20,
         shadowOpacity: 0,
-        backgroundColor: 'rgba(242, 235, 233, 0.4)',
+        backgroundColor: colors.snow,
     },
     sub_container: {
         borderRadius: 20,

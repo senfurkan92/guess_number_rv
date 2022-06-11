@@ -1,33 +1,34 @@
 import { Text, View, StyleSheet } from "react-native";
 import MyButton from "../components/ui/MyButton";
 import MyInput from "../components/ui/MyInput";
+import MyText from "../components/ui/MyText";
 import GameArea from "../components/box/GameArea";
-import { useState } from "react";
-import { inputSchema } from '../schemas/index'
-
+import { useNumberContext } from '../store/number-context'
+import { useScreenContext } from '../store/screen-context'
 
 export default function StartGameScreen() {
-    const [nmb, setNmb] = useState('1')
+    const {
+        nmb,
+        setNmb,
+        resetHandler,
+        confirmHandler
+    } = useNumberContext();
 
-    const confirmHandler = async () => {
-        inputSchema.validate({
-            number: nmb
-        }, {
-            abortEarly: false
-        })
-            .then(x => alert(x.number))
-            .catch(err => {
-                const list = err.inner.map(x => x.message)
-                alert(list.join('... '))
-            })
-    }
+    const {
+        setScreenNo
+    } = useScreenContext();
 
-    const resetHandler = () => {
-        setNmb('1')
+    const customizeConfirmHandler = async () => {
+        if (await confirmHandler()) {
+            setScreenNo(1)
+        }
     }
 
     return (
         <GameArea>
+            <MyText color={'info'}>
+                Keep A Number (1-99)
+            </MyText>
             <MyInput action={(text) => setNmb(text)} current_value={nmb}/>
             <View style={styles.btn_container}>
                 <View style={{flex: 1}}>
@@ -36,7 +37,7 @@ export default function StartGameScreen() {
                     </MyButton>
                 </View>
                 <View style={{flex: 1}}>
-                    <MyButton bgColor={'info'} action={confirmHandler}>
+                    <MyButton bgColor={'info'} action={customizeConfirmHandler}>
                         <Text style={{textAlign: 'center', color: 'white'}}>CONFIRM</Text>
                     </MyButton>
                 </View>

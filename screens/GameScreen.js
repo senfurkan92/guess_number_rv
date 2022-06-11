@@ -1,11 +1,100 @@
-import { Pressable, Text, View } from "react-native";
+import { View, Alert, StyleSheet, Text } from "react-native"
+import { useEffect, useState } from "react"
+import { useNumberContext } from '../store/number-context'
+import { useScreenContext } from '../store/screen-context'
+import GameArea from '../components/box/GameArea'
+import MyText from '../components/ui/MyText'
+import MyButton from "../components/ui/MyButton";
+import MyLogs from "../components/ui/MyLogs"
+import { randomGenarator } from '../util/methods'
 
 export default function GameScreen() {
+    const {
+        nmb,
+    } = useNumberContext();
+    const {
+        setScreenNo
+    } = useScreenContext();
+
+    const [guessed, setGuessed] = useState('')
+    const [guessHistory, setGuessHistory] = useState([])
+
+    useEffect(() => {
+        const random = randomGenarator(1, 99)
+        setGuessed(random)
+        addLog(random)
+    } ,[])
+
+    useEffect(() => {
+        guessed && !guessHistory.includes(guessed) && addLog(guessed)
+        if(guessed == nmb) {
+            Alert.alert('Success', `The number has been found as ${guessed}`, [
+                {
+                    text: 'OK',
+                    onPress: () => setScreenNo(2)
+                }
+            ]) 
+        }
+    } ,[guessed])
+
+    const addLog = (logValue) => {
+        setGuessHistory([
+            ...guessHistory,
+            logValue
+        ])
+    }
+
+    const lowBtnClick = () => {
+        let sorted = guessHistory.sort((a,b) => a-b)
+
+        let index = sorted.indexOf(guessed)
+        min = sorted[index-1] + 1 || 1
+
+        const random = randomGenarator(min, guessed - 1)
+        setGuessed(random)
+    }
+
+    const hignBtnClick = () => {
+        const sorted = guessHistory.sort((a,b) => a-b)
+
+        let index = sorted.indexOf(guessed)
+        max = sorted[index+1] - 1 || 99
+        
+        const random = randomGenarator(guessed + 1, max)
+        setGuessed(random)
+    }
+
     return (
         <View>
-            <Text>
-                GameScreen
-            </Text>
+            <GameArea>
+                <MyText color={'info'}>
+                    Guess The Number
+                </MyText>
+                <MyText color={'secondary'}>Guessed: {guessed}</MyText>  
+                <View style={styles.btn_container}>
+                    <View style={{flex: 1}}>
+                        <MyButton bgColor={'danger'} action={() => lowBtnClick()}>
+                            <Text style={{textAlign: 'center', color: 'white'}}>-</Text>
+                        </MyButton>
+                    </View>
+                    <View style={{flex: 1}}>
+                        <MyButton bgColor={'info'} action={() => hignBtnClick()}>
+                            <Text style={{textAlign: 'center', color: 'white'}}>+</Text>
+                        </MyButton>
+                    </View>
+                </View>
+            </GameArea>
+            <GameArea>
+                <MyLogs logs={guessHistory}></MyLogs>
+            </GameArea>    
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    btn_container: {
+        flexDirection: "row",
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+})

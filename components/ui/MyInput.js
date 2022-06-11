@@ -1,4 +1,5 @@
 import { TextInput, StyleSheet, View } from 'react-native' 
+import colors from '../../util/colors'
 
 export default function MyInput({placeholder, action, maxLength, current_value}) {
 
@@ -22,18 +23,19 @@ export default function MyInput({placeholder, action, maxLength, current_value})
 
 const styles = StyleSheet.create({
     container: {
-        padding:10,
+        paddingBottom:10,
         alignItems: 'center',
     },  
     input: {
         backgroundColor: 'transparent',
-        borderBottomColor: '#7C3E66',
+        borderBottomColor: colors.primary,
         borderBottomWidth: 2,
         borderRadius: 10,
-        color: '#7C3E66',
+        color: colors.primary,
         padding:5,
         width: 150,
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 18
     },
 })

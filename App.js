@@ -1,18 +1,26 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native';
-import StartGameScreen from './screens/StartGameScreen';
+import { SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
+import MyRouter from './routes';
 import { LinearGradient } from 'expo-linear-gradient'
+import NumberProvider from './store/number-context'
+import ScreenProvider from './store/screen-context';
+import colors from './util/colors';
 
 export default function App() {
-  return (
-    <LinearGradient style={styles.grandpa} colors={['rgba(242, 235, 233, 1)', 'rgba(124, 62, 102, 1)']}>
-      <ImageBackground source={require('./assets/dices.jpg')} resizeMode="cover" style={styles.image}
-        imageStyle={{opacity:0.3}}
-      >
-        <View style={styles.content}>
-          <StartGameScreen/>
-        </View>
-      </ImageBackground>
-    </LinearGradient>
+
+  return ( 
+      <LinearGradient style={styles.grandpa} colors={[colors.gradientStart, colors.gradientEnd]}>
+        <ImageBackground source={require('./assets/dices.jpg')} resizeMode="cover" style={styles.image}
+          imageStyle={{opacity:0.3}}
+        >
+          <SafeAreaView style={styles.content}>
+            <NumberProvider>
+              <ScreenProvider>
+                <MyRouter></MyRouter>
+              </ScreenProvider>
+            </NumberProvider>
+          </SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
   );
 }
 
