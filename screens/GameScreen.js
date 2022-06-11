@@ -7,6 +7,7 @@ import MyText from '../components/ui/MyText'
 import MyButton from "../components/ui/MyButton";
 import MyLogs from "../components/ui/MyLogs"
 import { randomGenarator } from '../util/methods'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function GameScreen() {
     const {
@@ -45,23 +46,31 @@ export default function GameScreen() {
     }
 
     const lowBtnClick = () => {
-        let sorted = guessHistory.sort((a,b) => a-b)
+        if (guessed < nmb) {
+            Alert.alert('Not lower', 'liar')
+        } else {
+            let sorted = guessHistory.sort((a,b) => a-b)
 
-        let index = sorted.indexOf(guessed)
-        min = sorted[index-1] + 1 || 1
+            let index = sorted.indexOf(guessed)
+            let min = sorted[index-1] + 1 || 1
 
-        const random = randomGenarator(min, guessed - 1)
-        setGuessed(random)
+            const random = randomGenarator(min, guessed - 1)
+            setGuessed(random)
+        }        
     }
 
     const hignBtnClick = () => {
-        const sorted = guessHistory.sort((a,b) => a-b)
+        if (guessed > nmb) {
+            Alert.alert('Not higher', 'liar')
+        } else {
+            const sorted = guessHistory.sort((a,b) => a-b)
 
-        let index = sorted.indexOf(guessed)
-        max = sorted[index+1] - 1 || 99
-        
-        const random = randomGenarator(guessed + 1, max)
-        setGuessed(random)
+            let index = sorted.indexOf(guessed)
+            let max = sorted[index+1] - 1 || 99
+            
+            const random = randomGenarator(guessed + 1, max)
+            setGuessed(random)
+        }
     }
 
     return (
@@ -74,12 +83,12 @@ export default function GameScreen() {
                 <View style={styles.btn_container}>
                     <View style={{flex: 1}}>
                         <MyButton bgColor={'danger'} action={() => lowBtnClick()}>
-                            <Text style={{textAlign: 'center', color: 'white'}}>-</Text>
+                            <Ionicons name="remove-circle-outline" color={'snow'} size={18} style={{textAlign: "center"}}/>
                         </MyButton>
                     </View>
                     <View style={{flex: 1}}>
                         <MyButton bgColor={'info'} action={() => hignBtnClick()}>
-                            <Text style={{textAlign: 'center', color: 'white'}}>+</Text>
+                            <Ionicons name="add-circle-outline" color={'snow'} size={18} style={{textAlign: "center"}}/>
                         </MyButton>
                     </View>
                 </View>

@@ -4,7 +4,7 @@ import colors from '../../util/colors'
 export default function MyLogs({logs}) {
     const flatItem = ({item, index}) => (
         <View style={styles.area}>
-            <Text style={{textAlign: 'center'}}>{item}</Text>
+            <Text style={{textAlign: 'center', fontFamily: 'default-font'}}>{item}</Text>
         </View>
     )
 
